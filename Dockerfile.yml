@@ -1,0 +1,15 @@
+FROM node:12.14.0-alpine AS angular
+
+WORKDIR /angular-video-player
+
+COPY package*.json .
+
+RUN npm i
+
+COPY . .
+
+RUN npm run build
+
+FROM nginx:1.25.3-alpine
+
+COPY --from=angular /angular-video-player/dist /usr/share/nginx/html
