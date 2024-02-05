@@ -1,32 +1,23 @@
-name: github-pages-build
+name: runner-github
 
 on:
   push:
-    branches: [master]
+    branches: [develop]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Install
-        run: npm ci
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '12.14.0'
 
-      - name: Lint
-        run: npm run lint
-
-      - name: Test
-        run: npm run test:prod
+      - name: Install dependencies
+        run: npm i
 
       - name: Build
-        run: npm run build:prod
-
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.7.1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: dist
-          CLEAN: true
+        run: npm run build
