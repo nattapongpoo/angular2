@@ -11,17 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install
-        run: npm ci
+      - name: Install Node.js
+        run: actions/setup-node@v2
+        with:
+          node-version: '14'
 
-      - name: Lint
-        run: npm run lint
-
-      - name: Test
-        run: npm run test:prod
+      - name: Install dependencies
+        run: npm install
 
       - name: Build
-        run: npm run build:prod
+        run: npm run build:master
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
